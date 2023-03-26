@@ -1,5 +1,7 @@
 package u03
 
+import scala.annotation.tailrec
+
 object Streams extends App :
 
   import Lists.*
@@ -37,6 +39,26 @@ object Streams extends App :
     def iterate[A](init: => A)(next: A => A): Stream[A] =
       cons(init, iterate(next(init))(next))
 
+    //Task part 3, svolto da solo
+    def drop[A](s: Stream[A])(i: Int): Stream[A] = (s, i) match
+      case (l, 0) => l
+      case (Cons(h, t), n) if n > 0 => drop(t())(n - 1)
+
+    def constant[A](k: A): Stream[A] =
+      Stream.cons(k, constant(k))
+
+    def calculateFibonacci(n: Int): Int = n match
+      case 0 => 0
+      case 1 => 1
+      case _ => calculateFibonacci(n - 1) + calculateFibonacci(n - 2)
+
+    def fibonacci(n: Int): Stream[Int] =
+      Stream.cons(calculateFibonacci(n), fibonacci(n + 1))
+
+    def fibs: Stream[Int] =
+      fibonacci(0)
+
+
   end Stream
 
   // var simplifies chaining of functions a bit..
@@ -48,3 +70,4 @@ object Streams extends App :
 
   val corec: Stream[Int] = Stream.cons(1, corec) // {1,1,1,..}
   println(Stream.toList(Stream.take(corec)(10))) // [1,1,..,1]
+

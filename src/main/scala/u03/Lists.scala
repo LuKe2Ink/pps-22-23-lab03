@@ -28,3 +28,4 @@ object Lists extends App :
   import List.*
 
   println(sum(map(filter(l)(_ >= 20))(_ + 1))) // 21+31 = 52
+  println(filter(l)(_ <= 30))
